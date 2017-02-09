@@ -1,9 +1,3 @@
-import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
-
-/**
- * 
- */
 
 /**
  * @author BigMac
@@ -56,6 +50,22 @@ public class GameModel
     {
         return highCardGame;
     }
+
+	public void determineWinner() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void nextTurn() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public Hand getHumanHand(){
+		highCardGame.deal();
+		return highCardGame.getHand(0);
+	
+	}
         
 
 }
