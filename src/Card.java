@@ -1,5 +1,7 @@
 import java.util.Arrays;
 
+import javax.swing.JFrame;
+
 /**
  * The Card class is responsible for holding data and methods related to the
  * individual cards. It contains instance variables for the value and suit. It
