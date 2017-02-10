@@ -20,28 +20,42 @@ public class GameView extends JFrame {
 	public JPanel pnlComputerHand = new JPanel();
 	public JPanel pnlHumanHand = new JPanel();
 	public JPanel pnlPlayArea = new JPanel();
+	public JPanel pnlTimer = new JPanel();
 	private MouseListener gameListener;
 	JPanel mainPanel = new JPanel();
-
+	JPanel timerPanel = new JPanel();
 	// public JLabel lblConsole;
 
 	GameView(String title, int numCardsPerHand, int numPlayers) {
 		super(title);
 		mainPanel.setLayout(new GridLayout(3, 1));
+		timerPanel.setLayout(new GridLayout(1,1));
+		
 		mainPanel.add(pnlComputerHand);
 		mainPanel.add(pnlPlayArea);
 		mainPanel.add(pnlHumanHand);
+		timerPanel.add(pnlTimer);
 
 		pnlComputerHand.setBorder(BorderFactory
 				.createTitledBorder("Computer Hand"));
 		pnlHumanHand.setBorder(BorderFactory.createTitledBorder("Your Hand"));
 		pnlPlayArea.setBorder(BorderFactory.createTitledBorder("Playing Area"));
+		pnlTimer.setBorder(BorderFactory.createTitledBorder("Clock"));
 		pnlPlayArea.setLayout(new GridLayout(2, 4));
+		pnlTimer.setLayout(new GridLayout(3,1));
 		this.add(mainPanel, BorderLayout.CENTER);
+		this.add(timerPanel, BorderLayout.EAST);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GUICard.loadCardIcons();
 		this.pack();
+		
+		//Add timer
+	    Clock insertClock = new Clock();
+	    pnlTimer.add(insertClock.timeText);
+	    pnlTimer.add(insertClock.startStopButton);
+
+	    insertClock.timeText.setFont(new Font("Calibri", Font.CENTER_BASELINE, 40));
 	}
 
 	public void addGameListener(MouseListener gameListener) {
