@@ -24,13 +24,14 @@ public class GameView extends JFrame {
 	private MouseListener gameListener;
 	JPanel mainPanel = new JPanel();
 	JPanel timerPanel = new JPanel();
+
 	// public JLabel lblConsole;
 
 	GameView(String title, int numCardsPerHand, int numPlayers) {
 		super(title);
 		mainPanel.setLayout(new GridLayout(3, 1));
-		timerPanel.setLayout(new GridLayout(1,1));
-		
+		timerPanel.setLayout(new GridLayout(1, 1));
+
 		mainPanel.add(pnlComputerHand);
 		mainPanel.add(pnlPlayArea);
 		mainPanel.add(pnlHumanHand);
@@ -42,20 +43,21 @@ public class GameView extends JFrame {
 		pnlPlayArea.setBorder(BorderFactory.createTitledBorder("Playing Area"));
 		pnlTimer.setBorder(BorderFactory.createTitledBorder("Clock"));
 		pnlPlayArea.setLayout(new GridLayout(2, 4));
-		pnlTimer.setLayout(new GridLayout(3,1));
+		pnlTimer.setLayout(new GridLayout(3, 1));
 		this.add(mainPanel, BorderLayout.CENTER);
 		this.add(timerPanel, BorderLayout.EAST);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GUICard.loadCardIcons();
 		this.pack();
-		
-		//Add timer
-	    Clock insertClock = new Clock();
-	    pnlTimer.add(insertClock.timeText);
-	    pnlTimer.add(insertClock.startStopButton);
 
-	    insertClock.timeText.setFont(new Font("Calibri", Font.CENTER_BASELINE, 40));
+		// Add timer
+		Clock insertClock = new Clock();
+		pnlTimer.add(insertClock.timeText);
+		pnlTimer.add(insertClock.startStopButton);
+
+		insertClock.timeText.setFont(new Font("Calibri", Font.CENTER_BASELINE,
+				40));
 	}
 
 	public void addGameListener(MouseListener gameListener) {
@@ -78,25 +80,34 @@ public class GameView extends JFrame {
 	}
 
 	/**
-	 * Show the hands of the player (currently setup to just add a computer player and human) 
+	 * Show the hands of the player (currently setup to just add a computer
+	 * player and human)
+	 * 
 	 * @param hand
 	 */
 	public void showHands(Hand hand) {
 		// TODO enable multiple hands????
+		JLayeredPane player1 = new JLayeredPane();
 		for (int i = 0; i < NUM_CARDS_PER_HAND; i++) {
 			System.out.println(i);
 			computerLabels[i] = new JLabel(GUICard.getBackCardIcon());
-			humanLabels[i] = new JLabel(GUICard.getIcon(hand.inspectCard(i)));
+			humanLabels[i] = new CardLabel(hand.inspectCard(i));
 			humanLabels[i].addMouseListener(this.gameListener);
-			pnlHumanHand.add(humanLabels[i]);
+			humanLabels[i].setBounds(i, 0, GUICard.getBackCardIcon()
+					.getIconWidth(), GUICard.getBackCardIcon().getIconHeight());
+			humanLabels[i].setBackground(Color.white);
+			player1.add(humanLabels[i],i);
 			pnlComputerHand.add(computerLabels[i]);
 		}
+		player1.setPreferredSize(new Dimension(300, 300));
+		pnlHumanHand.add(player1);
 
 		this.pack();
 	}
 
 	/**
-	 * shows play area. (The setup is currently based on the assignment 5 phase 3.)
+	 * shows play area. (The setup is currently based on the assignment 5 phase
+	 * 3.)
 	 */
 	public void showPlayArea() {
 		// TODO update for multiple players.
@@ -105,10 +116,11 @@ public class GameView extends JFrame {
 
 		for (int j = 0; j < NUM_PLAYERS; j++) {
 			pnlPlayArea.add(playedCardLabels[j]);
-			winningStack[j]  = new JLayeredPane();
-			playLabelText[j] = new JLabel("Player" +(j+1), JLabel.CENTER);
+			winningStack[j] = new JLayeredPane();
+
+			playLabelText[j] = new JLabel("Player" + (j + 1), JLabel.CENTER);
 			results[j] = new JLabel("", JLabel.RIGHT);
-	      pnlPlayArea.add(winningStack[j]);
+			pnlPlayArea.add(winningStack[j]);
 		}
 	}
 }

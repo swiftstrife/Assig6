@@ -13,12 +13,15 @@ public class GameController {
 		this.view.showHands(model.getHumanHand());
 		
 	}
+	class GameListener implements MouseListener , Cloneable{
 
-	class GameListener implements MouseListener {
-
+		
 		@Override
 		public void mousePressed(MouseEvent e) {
+			//e.getComponent().setVisible(false);
 			System.out.println("A CARD WAS CLICKED ON!");
+			System.out.println(((CardLabel)e.getSource()).getCard().toString());
+			((CardLabel)e.getSource()).flip();
 			model.determineWinner();
 			model.nextTurn();
 
@@ -57,6 +60,9 @@ public class GameController {
 			// TODO Auto-generated method stub
 
 		}
+		
 
+		
 	}
+	
 }
