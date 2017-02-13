@@ -119,6 +119,11 @@ class Hand
       Card.arraySort(myCards, getNumCards());
    }
 
+   /**
+    * Plays the card
+    * @param cardIndex
+    * @return
+    */
    public Card playCard(int cardIndex)
    {
       // TODO Auto-generated method stub

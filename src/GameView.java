@@ -8,6 +8,7 @@ import java.awt.event.MouseListener;
  *
  */
 public class GameView extends JFrame {
+
 	int NUM_CARDS_PER_HAND = 7;
 	int NUM_PLAYERS = 2;
 	JLabel[] computerLabels = new JLabel[NUM_CARDS_PER_HAND];
@@ -15,11 +16,7 @@ public class GameView extends JFrame {
 	JLabel[] playedCardLabels = new JLabel[NUM_PLAYERS];
 	JLabel[] playLabelText = new JLabel[NUM_PLAYERS];
 	JLabel[] results = new JLabel[NUM_PLAYERS];
-
-	Card[] computerWinning = new Card[NUM_CARDS_PER_HAND * NUM_PLAYERS];
-	Card[] humanWinning = new Card[NUM_CARDS_PER_HAND * NUM_PLAYERS];
 	JLayeredPane[] winningStack = new JLayeredPane[NUM_PLAYERS];
-
 	public JPanel pnlComputerHand = new JPanel();
 	public JPanel pnlHumanHand = new JPanel();
 	public JPanel pnlPlayArea = new JPanel();
@@ -67,23 +64,25 @@ public class GameView extends JFrame {
 	}
 
 	public void showWinner() {
-		// TODO Auto-generated method stub
+		// TODO at the end of the game show the winner
 
 	}
 
 	public void showWinnings() {
-		// TODO Auto-generated method stub
+		// TODO Show winning stacks?
 
 	}
 
 	public void refresh() {
-		// TODO Auto-generated method stub
-
+		pack();
 	}
 
-	// shows the human and computer hand.
+	/**
+	 * Show the hands of the player (currently setup to just add a computer player and human) 
+	 * @param hand
+	 */
 	public void showHands(Hand hand) {
-
+		// TODO enable multiple hands????
 		for (int i = 0; i < NUM_CARDS_PER_HAND; i++) {
 			System.out.println(i);
 			computerLabels[i] = new JLabel(GUICard.getBackCardIcon());
@@ -96,7 +95,11 @@ public class GameView extends JFrame {
 		this.pack();
 	}
 
+	/**
+	 * shows play area. (The setup is currently based on the assignment 5 phase 3.)
+	 */
 	public void showPlayArea() {
+		// TODO update for multiple players.
 		playedCardLabels[0] = new JLabel(GUICard.getBackCardIcon());
 		playedCardLabels[1] = new JLabel(GUICard.getBackCardIcon());
 
