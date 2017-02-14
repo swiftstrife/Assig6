@@ -36,20 +36,20 @@ public class GameView extends JFrame {
 		mainPanel.add(pnlPlayArea);
 		mainPanel.add(pnlHumanHand);
 		timerPanel.add(pnlTimer);
-
+		setSize(475, 500);
 		pnlComputerHand.setBorder(BorderFactory
 				.createTitledBorder("Computer Hand"));
 		pnlHumanHand.setBorder(BorderFactory.createTitledBorder("Your Hand"));
+		pnlHumanHand.setLayout(new BorderLayout());
 		pnlPlayArea.setBorder(BorderFactory.createTitledBorder("Playing Area"));
 		pnlTimer.setBorder(BorderFactory.createTitledBorder("Clock"));
 		pnlPlayArea.setLayout(new GridLayout(2, 4));
 		pnlTimer.setLayout(new GridLayout(3, 1));
 		this.add(mainPanel, BorderLayout.CENTER);
 		this.add(timerPanel, BorderLayout.EAST);
-		this.setLocationRelativeTo(null);
+		//this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GUICard.loadCardIcons();
-		this.pack();
 
 		// Add timer
 		Clock insertClock = new Clock();
@@ -58,6 +58,7 @@ public class GameView extends JFrame {
 
 		insertClock.timeText.setFont(new Font("Calibri", Font.CENTER_BASELINE,
 				40));
+	//this.pack();
 	}
 
 	public void addGameListener(MouseListener gameListener) {
@@ -88,20 +89,24 @@ public class GameView extends JFrame {
 	public void showHands(Hand hand) {
 		// TODO enable multiple hands????
 		JLayeredPane player1 = new JLayeredPane();
+		
 		for (int i = 0; i < NUM_CARDS_PER_HAND; i++) {
 			System.out.println(i);
 			computerLabels[i] = new JLabel(GUICard.getBackCardIcon());
 			humanLabels[i] = new CardLabel(hand.inspectCard(i));
 			humanLabels[i].addMouseListener(this.gameListener);
-			humanLabels[i].setBounds(i, 0, GUICard.getBackCardIcon()
+			humanLabels[i].setBounds(((getWidth()-i * (getWidth()/NUM_CARDS_PER_HAND))), 0, GUICard.getBackCardIcon()
 					.getIconWidth(), GUICard.getBackCardIcon().getIconHeight());
 			humanLabels[i].setBackground(Color.white);
-			player1.add(humanLabels[i],i);
+			player1.add(humanLabels[i],-i);
 			pnlComputerHand.add(computerLabels[i]);
 		}
-		player1.setPreferredSize(new Dimension(300, 300));
+//		player1.setPreferredSize(new Dimension(300, 300));
+		
+		//cursor test
+		
+		//setCursor(new Cursor(ICONIFIED));
 		pnlHumanHand.add(player1);
-
 		this.pack();
 	}
 
@@ -122,5 +127,13 @@ public class GameView extends JFrame {
 			results[j] = new JLabel("", JLabel.RIGHT);
 			pnlPlayArea.add(winningStack[j]);
 		}
+	}
+	public void changeCursorImage(){
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Image image = toolkit.getImage("images/4D.gif");
+		Cursor c = toolkit.createCustomCursor(image , new Point(getX(), 
+		           getY()), "img");
+		setCursor (c);
+	
 	}
 }
