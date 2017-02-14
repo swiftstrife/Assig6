@@ -91,7 +91,7 @@ class GUICard
     * @param card
     * @return
     */
-   private static int valueAsInt(Card card)
+   public static int valueAsInt(Card card)
    {
       return new String(Card.cardNumber).indexOf(card.getValue());
    }

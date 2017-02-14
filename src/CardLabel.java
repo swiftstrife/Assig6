@@ -7,7 +7,12 @@ public class CardLabel extends JLabel {
 	Icon backIcon;
 	Icon frontIcon;
 	boolean faceUp;
-	
+	boolean played;
+
+	public CardLabel() {
+		this(new Card());
+	}
+
 	public CardLabel(Card card) {
 		this.card = card;
 		if (GUICard.iconsLoaded == false) {
@@ -17,16 +22,26 @@ public class CardLabel extends JLabel {
 		frontIcon = GUICard.getIcon(card);
 		setIcon(backIcon);
 	}
-	
-	public boolean flip(){
-		if(faceUp){
+
+	public boolean flip() {
+		if (faceUp) {
 			setIcon(backIcon);
 			faceUp = false;
-		}else{
+		} else {
 			setIcon(frontIcon);
 			faceUp = true;
 		}
 		return faceUp;
 	}
 
+	public Card getCard() {
+		return card;
+	}
+
+	public boolean isPlayed() {
+		return played;
+	}
+	public void setPlayed(boolean played) {
+		this.played = played;
+	}
 }

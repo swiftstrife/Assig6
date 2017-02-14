@@ -7,6 +7,7 @@ public class GameModel
 {	
 	static int NUM_CARDS_PER_HAND = 7;
 	static int NUM_PLAYERS = 2;
+	CardLabel nextCard;
 
 	int numPacksPerDeck = 1;
     int numJokersPerPack = 0;
@@ -51,20 +52,27 @@ public class GameModel
         return highCardGame;
     }
 
-	public void determineWinner() {
-		// TODO Auto-generated method stub
-		
-	}
 
-	public void nextTurn() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	public Hand getHumanHand(){
 		highCardGame.deal();
 		return highCardGame.getHand(0);
 	
+	}
+	public void setNextCard(CardLabel nextCard) {
+		this.nextCard = nextCard;
+	}
+	public CardLabel getNextCard() {
+		return nextCard;
+	}
+
+	public boolean isPlayable(Card source,Card destination) {
+		int comp = Math.abs(GUICard.valueAsInt(source)-GUICard.valueAsInt(destination));
+		if(comp>1 ||comp == 0){
+			return false;
+		}else{
+			return true;
+		}
 	}
         
 
