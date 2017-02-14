@@ -1,5 +1,12 @@
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
+import javax.swing.ImageIcon;
 
 public class GameController {
 	private GameModel model;
@@ -12,23 +19,34 @@ public class GameController {
 		view.showPlayArea();
 		this.view.showHands(model.getHumanHand());
 		
-	}
-	class GameListener implements MouseListener , Cloneable{
 
-		
+	}
+
+	class GameListener implements MouseListener {
+
 		@Override
 		public void mousePressed(MouseEvent e) {
-			//e.getComponent().setVisible(false);
+			// e.getComponent().setVisible(false);
 			System.out.println("A CARD WAS CLICKED ON!");
-			System.out.println(((CardLabel)e.getSource()).getCard().toString());
-			((CardLabel)e.getSource()).flip();
-			model.determineWinner();
-			model.nextTurn();
+			System.out
+					.println(((CardLabel) e.getSource()).getCard().toString());
+			CardLabel card = ((CardLabel) e.getSource());
+			if (card.faceUp == false) {
+				card.flip();
+			}
+			if (card.isPlayed() == false) {
+				view.changeCursorImage(card);
+				model.setNextCard(card);
+				model.isPlayable();
+				// view.showWinner();
+				view.showWinnings();
 
-			view.showWinner();
-			view.showWinnings();
-
-			view.refresh();
+				view.refresh();
+			} else{
+				Component p = e.getComponent().getParent();
+				
+				e.getComponent().getParent().add(model.nextCard);
+			}
 		}
 
 		@Override
@@ -60,9 +78,7 @@ public class GameController {
 			// TODO Auto-generated method stub
 
 		}
-		
 
-		
 	}
-	
+
 }

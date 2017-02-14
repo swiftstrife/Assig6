@@ -13,7 +13,7 @@ public class GameView extends JFrame {
 	int NUM_PLAYERS = 2;
 	JLabel[] computerLabels = new JLabel[NUM_CARDS_PER_HAND];
 	JLabel[] humanLabels = new JLabel[NUM_CARDS_PER_HAND];
-	JLabel[] playedCardLabels = new JLabel[NUM_PLAYERS];
+	CardLabel[] playedCardLabels = new CardLabel[NUM_PLAYERS];
 	JLabel[] playLabelText = new JLabel[NUM_PLAYERS];
 	JLabel[] results = new JLabel[NUM_PLAYERS];
 	JLayeredPane[] winningStack = new JLayeredPane[NUM_PLAYERS];
@@ -116,24 +116,28 @@ public class GameView extends JFrame {
 	 */
 	public void showPlayArea() {
 		// TODO update for multiple players.
-		playedCardLabels[0] = new JLabel(GUICard.getBackCardIcon());
-		playedCardLabels[1] = new JLabel(GUICard.getBackCardIcon());
-
+	
+		
 		for (int j = 0; j < NUM_PLAYERS; j++) {
+			playedCardLabels[j] = new CardLabel();
+			playedCardLabels[j].played = true;
+			playedCardLabels[j].addMouseListener(gameListener);
 			pnlPlayArea.add(playedCardLabels[j]);
 			winningStack[j] = new JLayeredPane();
-
+			
 			playLabelText[j] = new JLabel("Player" + (j + 1), JLabel.CENTER);
 			results[j] = new JLabel("", JLabel.RIGHT);
 			pnlPlayArea.add(winningStack[j]);
+			
 		}
 	}
-	public void changeCursorImage(){
-		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		Image image = toolkit.getImage("images/4D.gif");
-		Cursor c = toolkit.createCustomCursor(image , new Point(getX(), 
-		           getY()), "img");
-		setCursor (c);
 	
+	public void changeCursorImage(CardLabel card) {
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Image image = ((ImageIcon) card.getIcon()).getImage();
+		Cursor c = toolkit.createCustomCursor(image, new Point(getX(),
+				getY()), "img");
+		setCursor(c);
+
 	}
 }
