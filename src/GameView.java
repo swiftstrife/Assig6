@@ -11,6 +11,7 @@ public class GameView extends JFrame {
 
 	int NUM_CARDS_PER_HAND = 7;
 	int NUM_PLAYERS = 2;
+	int[] stackCount = {0,0};
 	private MouseListener gameListener;
 	JLabel[] computerLabels = new JLabel[NUM_CARDS_PER_HAND];
 	JLabel[] humanLabels = new JLabel[NUM_CARDS_PER_HAND];
@@ -58,7 +59,6 @@ public class GameView extends JFrame {
 
 		insertClock.timeText.setFont(new Font("Calibri", Font.CENTER_BASELINE,
 				40));
-		// this.pack();
 	}
 
 	public void addGameListener(MouseListener gameListener) {
@@ -123,10 +123,26 @@ public class GameView extends JFrame {
 			playedCardLabels[j].setPlayed(true);
 			playedCardLabels[j].addMouseListener(gameListener);
 			playStack[j] = new JLayeredPane();
-			playedCardLabels[j].setBounds(0, 0, GUICard.getBackCardIcon()
-					.getIconWidth(), GUICard.getBackCardIcon().getIconHeight());
-			playStack[j].add(playedCardLabels[j]);
+			playedCardLabels[j].setBounds(10, 0, GUICard.getBackCardIcon()
+					.getIconWidth(), GUICard.getBackCardIcon()
+					.getIconHeight());
+			playStack[j].add(playedCardLabels[j], 0);
 			pnlPlayArea.add(playStack[j]);
+		}
+	}
+
+	public void addCardToPlayArea(CardLabel sourceCard,
+			CardLabel destinationCard) {
+		for (int i = 0; i < playStack.length; i++) {
+			JLayeredPane jlp = playStack[i];
+			if (destinationCard.getParent() == jlp) {
+				stackCount[i]++;
+				jlp.add(sourceCard, new Integer(i),0-stackCount[i]);
+				sourceCard.setBounds(stackCount[i], 0, GUICard.getBackCardIcon()
+						.getIconWidth() * 3, GUICard.getBackCardIcon()
+						.getIconHeight());
+
+			}
 		}
 	}
 

@@ -23,10 +23,13 @@ public class GameController {
 	}
 
 	class GameListener implements MouseListener {
-
+		CardLabel sourceCard;
+		CardLabel destinationCard;
+		
 		@Override
 		public void mousePressed(MouseEvent e) {
 			// e.getComponent().setVisible(false);
+			sourceCard = (CardLabel) e.getSource();
 			System.out.println("A CARD WAS CLICKED ON!");
 			System.out
 					.println(((CardLabel) e.getSource()).getCard().toString());
@@ -47,15 +50,16 @@ public class GameController {
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			if(model.getNextCard()!= null){
-				
-				Component p = e.getComponent().getParent();
-				view.pnlHumanHand.remove(model.nextCard);
-				e.getComponent().getParent().add(model.nextCard);
-			
+			if(model.getNextCard()!= null && destinationCard.isPlayed()){
+/*//				sourceCard.setBounds(20, 0, GUICard.getBackCardIcon()
+//						.getIconWidth()*3, GUICard.getBackCardIcon().getIconHeight());
+//				destinationCard.getParent().add(sourceCard, 2);
+*/				//sourceCard.invalidate();	
+				view.addCardToPlayArea(sourceCard, destinationCard);
 			}
 			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			model.setNextCard(null);
+			view.pack();
 		}
 
 		/**
@@ -73,7 +77,7 @@ public class GameController {
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
+			destinationCard  = (CardLabel)e.getComponent();
 
 		}
 
