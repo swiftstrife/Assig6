@@ -66,8 +66,13 @@ public class GameModel
 		return nextCard;
 	}
 
-	public boolean isPlayable() {
-		return true;
+	public boolean isPlayable(Card source,Card destination) {
+		int comp = Math.abs(GUICard.valueAsInt(source)-GUICard.valueAsInt(destination));
+		if(comp>1 ||comp == 0){
+			return false;
+		}else{
+			return true;
+		}
 	}
         
 

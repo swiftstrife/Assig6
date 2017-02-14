@@ -25,7 +25,7 @@ public class GameController {
 	class GameListener implements MouseListener {
 		CardLabel sourceCard;
 		CardLabel destinationCard;
-		
+
 		@Override
 		public void mousePressed(MouseEvent e) {
 			// e.getComponent().setVisible(false);
@@ -40,7 +40,7 @@ public class GameController {
 			if (card.isPlayed() == false) {
 				view.changeCursorImage(card);
 				model.setNextCard(card);
-				model.isPlayable();
+				
 				// view.showWinner();
 				view.showWinnings();
 
@@ -50,12 +50,11 @@ public class GameController {
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			if(model.getNextCard()!= null && destinationCard.isPlayed()){
-/*//				sourceCard.setBounds(20, 0, GUICard.getBackCardIcon()
-//						.getIconWidth()*3, GUICard.getBackCardIcon().getIconHeight());
-//				destinationCard.getParent().add(sourceCard, 2);
-*/				//sourceCard.invalidate();	
-				view.addCardToPlayArea(sourceCard, destinationCard);
+			if (model.getNextCard() != null && destinationCard.isPlayed()) {
+				if (model.isPlayable(sourceCard.getCard(),
+						destinationCard.getCard())) {
+					view.addCardToPlayArea(sourceCard, destinationCard);
+				}
 			}
 			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			model.setNextCard(null);
@@ -77,7 +76,7 @@ public class GameController {
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			destinationCard  = (CardLabel)e.getComponent();
+			destinationCard = (CardLabel) e.getComponent();
 
 		}
 
