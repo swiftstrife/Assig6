@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 
 public class GameController {
 	private GameModel model;
@@ -18,7 +19,6 @@ public class GameController {
 		this.view.addGameListener(new GameListener());
 		view.showPlayArea();
 		this.view.showHands(model.getHumanHand());
-		
 
 	}
 
@@ -42,16 +42,20 @@ public class GameController {
 				view.showWinnings();
 
 				view.refresh();
-			} else{
-				Component p = e.getComponent().getParent();
-				
-				e.getComponent().getParent().add(model.nextCard);
 			}
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-
+			if(model.getNextCard()!= null){
+				
+				Component p = e.getComponent().getParent();
+				view.pnlHumanHand.remove(model.nextCard);
+				e.getComponent().getParent().add(model.nextCard);
+			
+			}
+			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			model.setNextCard(null);
 		}
 
 		/**

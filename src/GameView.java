@@ -11,17 +11,17 @@ public class GameView extends JFrame {
 
 	int NUM_CARDS_PER_HAND = 7;
 	int NUM_PLAYERS = 2;
+	private MouseListener gameListener;
 	JLabel[] computerLabels = new JLabel[NUM_CARDS_PER_HAND];
 	JLabel[] humanLabels = new JLabel[NUM_CARDS_PER_HAND];
 	CardLabel[] playedCardLabels = new CardLabel[NUM_PLAYERS];
 	JLabel[] playLabelText = new JLabel[NUM_PLAYERS];
 	JLabel[] results = new JLabel[NUM_PLAYERS];
-	JLayeredPane[] winningStack = new JLayeredPane[NUM_PLAYERS];
+	JLayeredPane[] playStack = new JLayeredPane[NUM_PLAYERS];
 	public JPanel pnlComputerHand = new JPanel();
 	public JPanel pnlHumanHand = new JPanel();
 	public JPanel pnlPlayArea = new JPanel();
 	public JPanel pnlTimer = new JPanel();
-	private MouseListener gameListener;
 	JPanel mainPanel = new JPanel();
 	JPanel timerPanel = new JPanel();
 
@@ -43,11 +43,11 @@ public class GameView extends JFrame {
 		pnlHumanHand.setLayout(new BorderLayout());
 		pnlPlayArea.setBorder(BorderFactory.createTitledBorder("Playing Area"));
 		pnlTimer.setBorder(BorderFactory.createTitledBorder("Clock"));
-		pnlPlayArea.setLayout(new GridLayout(2, 4));
+		pnlPlayArea.setLayout(new GridLayout(1, 2));
 		pnlTimer.setLayout(new GridLayout(3, 1));
 		this.add(mainPanel, BorderLayout.CENTER);
 		this.add(timerPanel, BorderLayout.EAST);
-		//this.setLocationRelativeTo(null);
+		// this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GUICard.loadCardIcons();
 
@@ -58,7 +58,7 @@ public class GameView extends JFrame {
 
 		insertClock.timeText.setFont(new Font("Calibri", Font.CENTER_BASELINE,
 				40));
-	//this.pack();
+		// this.pack();
 	}
 
 	public void addGameListener(MouseListener gameListener) {
@@ -89,23 +89,24 @@ public class GameView extends JFrame {
 	public void showHands(Hand hand) {
 		// TODO enable multiple hands????
 		JLayeredPane player1 = new JLayeredPane();
-		
+
 		for (int i = 0; i < NUM_CARDS_PER_HAND; i++) {
 			System.out.println(i);
 			computerLabels[i] = new JLabel(GUICard.getBackCardIcon());
 			humanLabels[i] = new CardLabel(hand.inspectCard(i));
 			humanLabels[i].addMouseListener(this.gameListener);
-			humanLabels[i].setBounds(((getWidth()-i * (getWidth()/NUM_CARDS_PER_HAND))), 0, GUICard.getBackCardIcon()
-					.getIconWidth(), GUICard.getBackCardIcon().getIconHeight());
+			humanLabels[i].setBounds(((getWidth() - i
+					* (getWidth() / NUM_CARDS_PER_HAND))), 0, GUICard
+					.getBackCardIcon().getIconWidth(), GUICard
+					.getBackCardIcon().getIconHeight());
 			humanLabels[i].setBackground(Color.white);
-			player1.add(humanLabels[i],-i);
+			player1.add(humanLabels[i], -i);
 			pnlComputerHand.add(computerLabels[i]);
 		}
-//		player1.setPreferredSize(new Dimension(300, 300));
-		
-		//cursor test
-		
-		//setCursor(new Cursor(ICONIFIED));
+
+		// cursor test
+
+		// setCursor(new Cursor(ICONIFIED));
 		pnlHumanHand.add(player1);
 		this.pack();
 	}
@@ -116,28 +117,26 @@ public class GameView extends JFrame {
 	 */
 	public void showPlayArea() {
 		// TODO update for multiple players.
-	
-		
+
 		for (int j = 0; j < NUM_PLAYERS; j++) {
 			playedCardLabels[j] = new CardLabel();
-			playedCardLabels[j].played = true;
+			playedCardLabels[j].setPlayed(true);
 			playedCardLabels[j].addMouseListener(gameListener);
-			pnlPlayArea.add(playedCardLabels[j]);
-			winningStack[j] = new JLayeredPane();
-			
-			playLabelText[j] = new JLabel("Player" + (j + 1), JLabel.CENTER);
-			results[j] = new JLabel("", JLabel.RIGHT);
-			pnlPlayArea.add(winningStack[j]);
-			
+			playStack[j] = new JLayeredPane();
+			playedCardLabels[j].setBounds(0, 0, GUICard.getBackCardIcon()
+					.getIconWidth(), GUICard.getBackCardIcon().getIconHeight());
+			playStack[j].add(playedCardLabels[j]);
+			pnlPlayArea.add(playStack[j]);
 		}
 	}
-	
+
 	public void changeCursorImage(CardLabel card) {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Image image = ((ImageIcon) card.getIcon()).getImage();
-		Cursor c = toolkit.createCustomCursor(image, new Point(getX(),
-				getY()), "img");
+		Cursor c = toolkit.createCustomCursor(image, new Point(getX(), getY()),
+				"img");
 		setCursor(c);
 
 	}
+
 }

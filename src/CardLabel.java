@@ -9,9 +9,10 @@ public class CardLabel extends JLabel {
 	boolean faceUp;
 	boolean played;
 
-	public CardLabel(){
+	public CardLabel() {
 		this(new Card());
 	}
+
 	public CardLabel(Card card) {
 		this.card = card;
 		if (GUICard.iconsLoaded == false) {
@@ -36,7 +37,11 @@ public class CardLabel extends JLabel {
 	public Card getCard() {
 		return card;
 	}
-	public boolean isPlayed(){
+
+	public boolean isPlayed() {
 		return played;
+	}
+	public void setPlayed(boolean played) {
+		this.played = played;
 	}
 }
