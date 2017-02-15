@@ -24,6 +24,7 @@ public class GameController
       this.view.addButtonListener(new ButtonListener());
       view.showPlayArea();
       this.view.showHands(model.getHumanHand());
+      this.view.showComputerHand(model.getHumanHand());
 
    }
 
@@ -49,9 +50,11 @@ public class GameController
             view.changeCursorImage(card);
             model.setNextCard(card);
 
-            view.showWinner();
-
             view.refresh();
+         }
+         if (model.getCannotPlays() > 10)
+         {
+            view.showWinner();
          }
       }
 
@@ -69,8 +72,6 @@ public class GameController
          model.setNextCard(null);
          view.pack();
       }
-
-
 
       @Override
       public void mouseClicked(MouseEvent e)

@@ -19,7 +19,6 @@ public class GameModel
 
    public GameModel()
    {
-
       if (highCardGame.deal() == false)
       {
          System.out.print("Error: Cannot deal.");
@@ -54,9 +53,12 @@ public class GameModel
 
    public Hand getHumanHand()
    {
-      highCardGame.deal();
+      
       return highCardGame.getHand(0);
 
+   }
+   public Hand getComputerHand(){
+      return highCardGame.getHand(1);
    }
 
    public void setNextCard(CardLabel nextCard)

@@ -82,8 +82,7 @@ public class GameView extends JFrame {
 	}
 
 	public void showWinner() {
-		// TODO at the end of the game show the winner
-
+		JOptionPane.showMessageDialog(null, "The game is won by");
 	}
 
 
@@ -93,6 +92,14 @@ public class GameView extends JFrame {
 		pack();
 	}
 
+	public void showComputerHand(Hand hand){
+	   for (int i = 0; i < NUM_CARDS_PER_HAND; i++) {
+         computerLabels[i] = new JLabel(GUICard.getBackCardIcon());
+    
+         pnlComputerHand.add(computerLabels[i]);
+      }
+	   this.pack();
+	}
 	/**
 	 * Show the hands of the player (currently setup to just add a computer
 	 * player and human)
@@ -104,8 +111,7 @@ public class GameView extends JFrame {
 		JLayeredPane player1 = new JLayeredPane();
 
 		for (int i = 0; i < NUM_CARDS_PER_HAND; i++) {
-			System.out.println(i);
-			computerLabels[i] = new JLabel(GUICard.getBackCardIcon());
+			//computerLabels[i] = new JLabel(GUICard.getBackCardIcon());
 			humanLabels[i] = new CardLabel(hand.inspectCard(i));
 			humanLabels[i].addMouseListener(this.gameListener);
 			humanLabels[i].setBounds(((getWidth() - i
@@ -115,14 +121,11 @@ public class GameView extends JFrame {
 			humanLabels[i].setBackground(Color.white);
 			player1.add(humanLabels[i], -i);
          ((CardLabel) humanLabels[i]).flip();
-			pnlComputerHand.add(computerLabels[i]);
+		//	pnlComputerHand.add(computerLabels[i]);
 		}
 
-		// cursor test
-
-		// setCursor(new Cursor(ICONIFIED));
 		pnlHumanHand.add(player1);
-		this.pack();
+	
 	}
 
 	/**
