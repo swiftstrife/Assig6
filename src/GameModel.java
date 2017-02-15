@@ -135,6 +135,22 @@ public class GameModel
       }
    }
 
+   public boolean isComputerPlayable(Card source, Card destination)
+   {
+      int comp = Math.abs(GUICard.valueAsInt(source)
+         - GUICard.valueAsInt(destination));
+      if (compCantPlay)
+      {
+         compCantPlay = false;
+         return true;
+      } else if ((comp > 1 || comp == 0))
+      {
+         return false;
+      } else
+      {
+         return true;
+      }
+   }
    public int getCannotPlays()
    {
       return cannotPlays;
@@ -159,15 +175,23 @@ public class GameModel
 
    public void setTopCard(CardLabel destinationCard, CardLabel sourceCard)
    {
+      boolean match= false;
+      System.out.println("destination"+destinationCard.getCard());
       for (int i = 0; i < topCards.length; i++)
       {
          if (destinationCard.getCard().equals(topCards[i]))
          {
             topCards[i] = sourceCard.getCard();
+            match = true;
             break;
          }
+         System.out.println("The new topCard is"+topCards[i]);
       }
-      System.out.println("Top Cards " + Arrays.toString(topCards));
+      System.out.println("Top Cards " + Arrays.toString(topCards) + " match is "+match);
+      
    }
- 
+ public void printTopCards(){
+    System.out.println("Print Top Cards " + Arrays.toString(topCards));
+
+  }
 }

@@ -165,6 +165,7 @@ public class GameView extends JFrame
 
    public void addCardToPlayArea(CardLabel sourceCard, CardLabel destinationCard)
    {
+      sourceCard.addMouseListener(gameListener);
       for (int i = 0; i < playStack.length; i++)
       {
          JLayeredPane jlp = playStack[i];
@@ -223,6 +224,7 @@ public class GameView extends JFrame
    public void addCardToHand(Card cardFromHumanHand)
    {
       CardLabel card = new CardLabel(cardFromHumanHand);
+  
       card.addMouseListener(this.gameListener);
       // card.addMouseMotionListener((MouseMotionListener) this.gameListener);
       this.pnlHumanHand.add(card);

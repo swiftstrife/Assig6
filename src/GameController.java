@@ -10,8 +10,10 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
+import javax.security.auth.Refreshable;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class GameController
 {
@@ -40,7 +42,7 @@ public class GameController
       public void mousePressed(MouseEvent e)
       {
          sourceCard = (CardLabel) e.getSource();
-         System.out.println(((CardLabel) e.getSource()).getCard().toString());
+         System.out.println("Click source: "+((CardLabel) e.getSource()).getCard().toString());
          CardLabel card = ((CardLabel) e.getSource());
          if (card.faceUp == false)
          {
@@ -65,6 +67,7 @@ public class GameController
                view.addCardToPlayArea(sourceCard, destinationCard);
                view.addCardToHand(model.dealCardFromHumanHand());
                model.setTopCard(destinationCard, sourceCard);
+               view.refresh();
                computerTurn = true;
             }
          }
@@ -78,38 +81,47 @@ public class GameController
 
       public void computerMove()
       {
+         int computerAttempts =20;
          int attempts = 0;
-         while (attempts < 10)
+         while (attempts < computerAttempts)
          {
             CardLabel test = view.getCompSource();
             System.out.println("Result: " + test.getCard());
             attempts++;
 
             CardLabel[] playedCards = view.getDestination();
+            CardLabel destination;
             for (int i = 0; i < playedCards.length; i++)
             {
-               if (model.isPlayable(test.getCard(), playedCards[i].getCard()))
+               if (test != null && playedCards[i].isPlayed())
                {
+               if (model.isComputerPlayable(test.getCard(), playedCards[i].getCard()))
+               {
+                  destination= playedCards[i];
                   System.out.println("adding cards");
                   view.addCardToPlayArea(test, playedCards[i]);
                   view.addCardToComputerHand(model.dealCardFromComputerHand());
-                  System.out.println("test " +test.getCard());
-                  model.setTopCard(playedCards[i], sourceCard);
-                  attempts = 11;
+                  System.out.println("Card being set to top cards " +test.getCard());
+                  model.setTopCard(destination, test);
+                  model.printTopCards();
+                  attempts = computerAttempts+1;
                   computerTurn = false;
                   break;
                }
+               }
             }
-         }
-         if (attempts == 10)
-         {
-            model.setCompCantPlay(true);
-            view.setComputerScore(model.getCompCannotPlays());
-            if (model.getCompCannotPlays() > 10)
+            if (attempts == computerAttempts-2)
             {
-               view.showWinner();
+               model.setCompCantPlay(true);
+               view.setComputerScore(model.getCompCannotPlays());
+               JOptionPane.showMessageDialog(null, "computer out of options");
+               if (model.getCompCannotPlays() > 10)
+               {
+                  view.showWinner();
+               }
             }
          }
+         
          computerTurn = false;
       }
 
