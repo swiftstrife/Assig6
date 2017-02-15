@@ -117,7 +117,7 @@ public class GameView extends JFrame
       for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
       {
          computerLabels[i] = new CardLabel(model.dealCardFromComputerHand());
-         ((CardLabel) computerLabels[i]).flip();
+         //((CardLabel) computerLabels[i]).flip();
          
          pnlComputerHand.add(computerLabels[i]);
       }
@@ -185,6 +185,8 @@ public class GameView extends JFrame
             playedCardLabels[j] = sourceCard;
          }
       }
+      if(sourceCard.faceUp!= true)
+         sourceCard.flip();
       System.out.println("removing source " + sourceCard.getCard());
       pnlComputerHand.remove(sourceCard);
       pnlComputerHand.repaint();
