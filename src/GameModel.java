@@ -1,3 +1,4 @@
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -136,7 +137,10 @@ public class GameModel
       this.cantPlay = cantPlay;
       cannotPlays++;
    }
-
+   public void setCompCantPlay(boolean compCantPlay)
+   {
+      this.compCantPlay = compCantPlay;
+   }
    public void setTopCard(CardLabel destinationCard, CardLabel sourceCard)
    {
       for (int i = 0; i < topCards.length; i++)
@@ -150,20 +154,27 @@ public class GameModel
       System.out.println("Top Cards " + Arrays.toString(topCards));
    }
 
-   public Card planNextMove(ArrayList<Card> computerHand)
+   public CardLabel planNextMove(Component[] computerHand)
    {
-      Card bestMove = null;
-      for(Card card :computerHand){
-         for (int i = 0; i < topCards.length; i++)
+      ArrayList<Card> cards = new ArrayList<Card>();
+      Component[] cardLabels = computerHand;
+      for (Component lab : cardLabels)
+      {
+         if (lab instanceof CardLabel)
          {
-            if(isPlayable(card, topCards[i])){
-               topCards[i]=card;
-               return card;
+            Card card = ((CardLabel) lab).getCard();
+            for (int i = 0; i < topCards.length; i++)
+            {
+               if(isPlayable(card, topCards[i])){
+                  topCards[i]=card;
+                  return (CardLabel) lab;
+               }
             }
+            cards.add(((CardLabel) lab).getCard());
          }
       }
-      
-      return bestMove;
+      return null;
    }
+      
 
 }

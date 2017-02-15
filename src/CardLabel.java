@@ -29,11 +29,11 @@ public class CardLabel extends JLabel
 
    public boolean flip()
    {
- /*     if (faceUp)
+      if (faceUp)
       {
          setIcon(backIcon);
          faceUp = false;
-      } else*/
+      } else
    if(!faceUp)
       {
          setIcon(frontIcon);

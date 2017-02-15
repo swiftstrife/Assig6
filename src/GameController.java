@@ -64,8 +64,13 @@ public class GameController
                view.addCardToPlayArea(sourceCard, destinationCard);
                view.addCardToHand(model.dealCardFromHumanHand());
                model.setTopCard(destinationCard, sourceCard);
-               Card bestMove = model.planNextMove(view.getComputerHand());
-               view.compMakeMove(bestMove);
+               CardLabel bestMove = model.planNextMove(view.getComputerHand());
+               if(bestMove == null){
+                  model.setCompCantPlay(true);
+               } else{
+                  
+                  view.compMakeMove(bestMove);
+               }
               
               
             }

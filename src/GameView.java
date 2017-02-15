@@ -218,40 +218,28 @@ public class GameView extends JFrame
 
    }
 
-   public ArrayList<Card> getComputerHand()
+   public Component[] getComputerHand()
    {
-      ArrayList<Card> cards = new ArrayList<Card>();
-      Component[] cardLabels = (Component[]) pnlComputerHand.getComponents();
-      for (Component lab : cardLabels)
-      {
-         if (lab instanceof CardLabel)
-         {
-            cards.add(((CardLabel) lab).getCard());
-         }
-      }
-      return cards;
+     return pnlComputerHand.getComponents();
+     
    }
 
-   public void compMakeMove(Card bestMove)
-   {
-      Component[] cardLabels = (Component[]) pnlComputerHand.getComponents();
-      for (Component lab : cardLabels)
-      {
-         if (lab instanceof CardLabel && lab!= null)
-         {
-           if(((CardLabel) lab).getCard().equals(bestMove)){
-              for(int i = 0; i < NUM_PLAYERS; i++){
-                 ((CardLabel) lab).flip();
-              if(((CardLabel) lab).isPlayable(this.playedCardLabels[i])){
-                 addCardToPlayArea((CardLabel) lab, playedCardLabels[i]);
+   public void compMakeMove(CardLabel bestMove)
+   {     
+      if(bestMove!=null){
+      bestMove.flip();           
+      for(int i = 0; i < NUM_PLAYERS; i++){
+              if(bestMove.isPlayable(this.playedCardLabels[i])){
+                 addCardToPlayArea(bestMove, playedCardLabels[i]);
                System.out.println("runs");
               }
               }
-              }
-              
-         }
+   }
+      else{
+         System.out.println("bestMove is null");
       }
    }
+   
    
    
    
