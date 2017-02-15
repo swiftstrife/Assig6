@@ -1,6 +1,7 @@
 import javax.swing.*;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 
 /**
@@ -11,7 +12,7 @@ public class GameView extends JFrame {
 
 	int NUM_CARDS_PER_HAND = 7;
 	int NUM_PLAYERS = 2;
-	int[] stackCount = {0,0};
+	int[] stackCount = { 52, 52 };
 	private MouseListener gameListener;
 	JLabel[] computerLabels = new JLabel[NUM_CARDS_PER_HAND];
 	JLabel[] humanLabels = new JLabel[NUM_CARDS_PER_HAND];
@@ -23,20 +24,27 @@ public class GameView extends JFrame {
 	public JPanel pnlHumanHand = new JPanel();
 	public JPanel pnlPlayArea = new JPanel();
 	public JPanel pnlTimer = new JPanel();
+	JLabel lblCantPlay = new JLabel("0", JLabel.CENTER);
+	JPanel playPanel = new JPanel();
 	JPanel mainPanel = new JPanel();
 	JPanel timerPanel = new JPanel();
+	JButton cantPlayButton = new JButton("Can't Play");
 
 	// public JLabel lblConsole;
 
 	GameView(String title, int numCardsPerHand, int numPlayers) {
 		super(title);
 		mainPanel.setLayout(new GridLayout(3, 1));
-		timerPanel.setLayout(new GridLayout(1, 1));
-
+		timerPanel.setLayout(new GridLayout(2, 1));
+		playPanel.setLayout(new GridLayout(2, 1));
+		playPanel.setBorder(BorderFactory.createTitledBorder("Reset Count"));
+		playPanel.add(lblCantPlay);
+		playPanel.add(cantPlayButton);
 		mainPanel.add(pnlComputerHand);
 		mainPanel.add(pnlPlayArea);
 		mainPanel.add(pnlHumanHand);
 		timerPanel.add(pnlTimer);
+		timerPanel.add(playPanel);
 		setSize(475, 500);
 		pnlComputerHand.setBorder(BorderFactory
 				.createTitledBorder("Computer Hand"));
@@ -51,7 +59,7 @@ public class GameView extends JFrame {
 		// this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GUICard.loadCardIcons();
-
+		
 		// Add timer
 		Clock insertClock = new Clock();
 		pnlTimer.add(insertClock.timeText);
@@ -77,6 +85,7 @@ public class GameView extends JFrame {
 	}
 
 	public void refresh() {
+		
 		pack();
 	}
 
@@ -101,6 +110,7 @@ public class GameView extends JFrame {
 					.getBackCardIcon().getIconHeight());
 			humanLabels[i].setBackground(Color.white);
 			player1.add(humanLabels[i], -i);
+         ((CardLabel) humanLabels[i]).flip();
 			pnlComputerHand.add(computerLabels[i]);
 		}
 
@@ -123,10 +133,10 @@ public class GameView extends JFrame {
 			playedCardLabels[j].setPlayed(true);
 			playedCardLabels[j].addMouseListener(gameListener);
 			playStack[j] = new JLayeredPane();
-			playedCardLabels[j].setBounds(10, 0, GUICard.getBackCardIcon()
-					.getIconWidth(), GUICard.getBackCardIcon()
-					.getIconHeight());
-			playStack[j].add(playedCardLabels[j], 0);
+			playedCardLabels[j].setBounds(stackCount[j] * 2, 0, GUICard
+					.getBackCardIcon().getIconWidth(), GUICard
+					.getBackCardIcon().getIconHeight());
+			playStack[j].add(playedCardLabels[j], stackCount[j] * 2);
 			pnlPlayArea.add(playStack[j]);
 		}
 	}
@@ -136,14 +146,17 @@ public class GameView extends JFrame {
 		for (int i = 0; i < playStack.length; i++) {
 			JLayeredPane jlp = playStack[i];
 			if (destinationCard.getParent() == jlp) {
-				stackCount[i]++;
-				jlp.add(sourceCard, new Integer(i),0-stackCount[i]);
-				sourceCard.setBounds(stackCount[i], 0, GUICard.getBackCardIcon()
-						.getIconWidth() * 3, GUICard.getBackCardIcon()
-						.getIconHeight());
-
+				stackCount[i]--;
+				jlp.add(sourceCard, new Integer(0), 0);
+				repaint();
+				sourceCard.setBounds(stackCount[i] * 2, 0, GUICard
+						.getBackCardIcon().getIconWidth() * 3, GUICard
+						.getBackCardIcon().getIconHeight());
+				sourceCard.setPlayed(true);
 			}
+
 		}
+
 	}
 
 	public void changeCursorImage(CardLabel card) {
@@ -153,6 +166,15 @@ public class GameView extends JFrame {
 				"img");
 		setCursor(c);
 
+	}
+	void setScore(int score){
+		lblCantPlay.setText(""+score);
+		refresh();
+	}
+
+	public void addButtonListener(ActionListener buttonListener) {
+		cantPlayButton.addActionListener(buttonListener);
+		
 	}
 
 }
