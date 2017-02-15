@@ -64,11 +64,13 @@ public class GameController
                view.addCardToPlayArea(sourceCard, destinationCard);
                view.addCardToHand(model.dealCardFromHumanHand());
                model.setTopCard(destinationCard, sourceCard);
-               CardLabel bestMove = model.planNextMove(view.getComputerHand());
+               CardLabel bestMove[] = model.planNextMove(view.getComputerHand());
                if(bestMove == null){
                   model.setCompCantPlay(true);
+                  CardLabel bestMoves[] = model.planNextMove(view.getComputerHand());
+                  view.compMakeMove(bestMoves);
+                  System.out.println("Bestmove isnt null");
                } else{
-                  
                   view.compMakeMove(bestMove);
                }
               

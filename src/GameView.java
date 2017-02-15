@@ -38,7 +38,6 @@ public class GameView extends JFrame
    JButton cantPlayButton = new JButton("Can't Play");
    JPanel buttonPanel = new JPanel();
    JPanel comPanel = new JPanel();
-   
 
    // public JLabel lblConsole;
 
@@ -178,14 +177,15 @@ public class GameView extends JFrame
             sourceCard.setPlayed(true);
          }
       }
-      for(int j = 0; j< playedCardLabels.length; j++){
-         if(playedCardLabels[j]==destinationCard){
-            playedCardLabels[j]=sourceCard;
+      for (int j = 0; j < playedCardLabels.length; j++)
+      {
+         if (playedCardLabels[j] == destinationCard)
+         {
+            playedCardLabels[j] = sourceCard;
          }
       }
-   }         
-
-
+      repaint();
+   }
 
    public void changeCursorImage(CardLabel card)
    {
@@ -220,27 +220,22 @@ public class GameView extends JFrame
 
    public Component[] getComputerHand()
    {
-     return pnlComputerHand.getComponents();
-     
+      return pnlComputerHand.getComponents();
+
    }
 
-   public void compMakeMove(CardLabel bestMove)
-   {     
-      if(bestMove!=null){
-      bestMove.flip();           
-      for(int i = 0; i < NUM_PLAYERS; i++){
-              if(bestMove.isPlayable(this.playedCardLabels[i])){
-                 addCardToPlayArea(bestMove, playedCardLabels[i]);
-               System.out.println("runs");
-              }
-              }
-   }
-      else{
-         System.out.println("bestMove is null");
+   public void compMakeMove(CardLabel[] bestMove)
+   {
+      for (int j = 0; j < bestMove.length; j++)
+      {
+         if (playedCardLabels[j].getCard().equals(bestMove[1].getCard()))
+         {
+               bestMove[j].flip();
+            addCardToPlayArea(bestMove[0], playedCardLabels[j]);
+            System.out.println("runs");
+            break;
+         }
       }
    }
-   
-   
-   
-   
+
 }

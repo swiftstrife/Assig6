@@ -154,9 +154,9 @@ public class GameModel
       System.out.println("Top Cards " + Arrays.toString(topCards));
    }
 
-   public CardLabel planNextMove(Component[] computerHand)
+   public CardLabel[] planNextMove(Component[] computerHand)
    {
-      ArrayList<Card> cards = new ArrayList<Card>();
+    
       Component[] cardLabels = computerHand;
       for (Component lab : cardLabels)
       {
@@ -165,14 +165,21 @@ public class GameModel
             Card card = ((CardLabel) lab).getCard();
             for (int i = 0; i < topCards.length; i++)
             {
+               if(compCantPlay){
+                  Card temp = topCards[i];
+                  topCards[i]=card;
+                  setCompCantPlay(false);
+                  return new CardLabel[]{(CardLabel) lab,new CardLabel(temp)};
+               }
                if(isPlayable(card, topCards[i])){
                   topCards[i]=card;
-                  return (CardLabel) lab;
+                  return new CardLabel[]{(CardLabel) lab,new CardLabel(topCards[i])};
                }
             }
-            cards.add(((CardLabel) lab).getCard());
+        
          }
       }
+      System.out.println("is this the prob?");
       return null;
    }
       
