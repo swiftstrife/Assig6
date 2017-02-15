@@ -84,14 +84,29 @@ public class GameController
             CardLabel test = view.getCompSource();
             System.out.println("Result: " + test.getCard());
             attempts++;
-            if (test != null)
+
+            CardLabel[] playedCards = view.getDestination();
+            for (int i = 0; i < playedCards.length; i++)
             {
-               break;
+               if (model.isPlayable(test.getCard(), playedCards[i].getCard()))
+               {
+                  view.addCardToPlayArea(sourceCard, destinationCard);
+                  view.addCardToComputerHand(model.dealCardFromComputerHand());
+                  model.setTopCard( sourceCard, destinationCard);
+                  attempts = 11;
+                  computerTurn = false;
+                  break;
+               }
             }
          }
          if (attempts == 10)
          {
             model.setCantPlay(true);
+            view.setComputerScore(model.getCompCannotPlays());
+            if (model.getCompCannotPlays() > 10)
+            {
+               view.showWinner();
+            }
          }
          computerTurn = false;
       }

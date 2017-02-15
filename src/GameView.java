@@ -179,11 +179,13 @@ public class GameView extends JFrame
       }
       for (int j = 0; j < playedCardLabels.length; j++)
       {
+         System.out.println("Played Card" + j + playedCardLabels[j].getCard());
          if (playedCardLabels[j] == destinationCard)
          {
             playedCardLabels[j] = sourceCard;
          }
       }
+      
       repaint();
    }
 
@@ -201,6 +203,12 @@ public class GameView extends JFrame
       lblCantPlay.setText("" + score);
       refresh();
    }
+   void setComputerScore(int score)
+   {
+      compCantPlay.setText(""+score);
+      refresh();
+   }
+
 
    public void addButtonListener(ActionListener buttonListener)
    {
@@ -217,7 +225,12 @@ public class GameView extends JFrame
       // player1.add(humanLabels[i], -i);
 
    }
+   public void addCardToComputerHand(Card cardFromComputerHand)
+   {
+      CardLabel card = new CardLabel(cardFromComputerHand);
+      this.pnlComputerHand.add(card);
 
+   }
    public CardLabel getCompSource()
    {
       Random ran = new Random();
@@ -232,6 +245,12 @@ public class GameView extends JFrame
       i++;
       }
       return (CardLabel)check;
+   }
+
+   public CardLabel[] getDestination()
+   {
+      return playedCardLabels;
+      
    }
 
 
