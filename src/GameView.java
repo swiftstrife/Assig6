@@ -86,16 +86,18 @@ public class GameView extends JFrame {
 	}
 
 
-
+	//refreshes the screen.
 	public void refresh() {
-		
 		pack();
 	}
 
+	/**
+	 * shows computer hand
+	 * @param hand
+	 */
 	public void showComputerHand(Hand hand){
 	   for (int i = 0; i < NUM_CARDS_PER_HAND; i++) {
-         computerLabels[i] = new JLabel(GUICard.getBackCardIcon());
-    
+         computerLabels[i] = new CardLabel(hand.inspectCard(i));
          pnlComputerHand.add(computerLabels[i]);
       }
 	   this.pack();

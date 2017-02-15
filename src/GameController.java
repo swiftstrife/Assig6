@@ -36,9 +36,7 @@ public class GameController
       @Override
       public void mousePressed(MouseEvent e)
       {
-         // e.getComponent().setVisible(false);
          sourceCard = (CardLabel) e.getSource();
-         System.out.println("A CARD WAS CLICKED ON!");
          System.out.println(((CardLabel) e.getSource()).getCard().toString());
          CardLabel card = ((CardLabel) e.getSource());
          if (card.faceUp == false)
@@ -48,20 +46,16 @@ public class GameController
          if (card.isPlayed() == false)
          {
             view.changeCursorImage(card);
-            model.setNextCard(card);
 
             view.refresh();
          }
-         if (model.getCannotPlays() > 10)
-         {
-            view.showWinner();
-         }
+         
       }
 
       @Override
       public void mouseReleased(MouseEvent e)
       {
-         if (model.getNextCard() != null && destinationCard.isPlayed())
+         if (sourceCard != null && destinationCard.isPlayed())
          {
             if (model.isPlayable(sourceCard.getCard(), destinationCard.getCard()))
             {
@@ -69,7 +63,6 @@ public class GameController
             }
          }
          view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-         model.setNextCard(null);
          view.pack();
       }
 
@@ -104,6 +97,10 @@ public class GameController
       {
          model.setCantPlay(true);
          view.setScore(model.getCannotPlays());
+         if (model.getCannotPlays() > 10)
+         {
+            view.showWinner();
+         }
       }
 
    }

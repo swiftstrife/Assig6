@@ -6,7 +6,6 @@ public class GameModel
 {
    static int NUM_CARDS_PER_HAND = 7;
    static int NUM_PLAYERS = 2;
-   CardLabel nextCard;
 
    int numPacksPerDeck = 1;
    int numJokersPerPack = 0;
@@ -61,15 +60,6 @@ public class GameModel
       return highCardGame.getHand(1);
    }
 
-   public void setNextCard(CardLabel nextCard)
-   {
-      this.nextCard = nextCard;
-   }
-
-   public CardLabel getNextCard()
-   {
-      return nextCard;
-   }
 
    public boolean isPlayable(Card source, Card destination)
    {
