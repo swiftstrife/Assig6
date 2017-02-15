@@ -223,11 +223,13 @@ public class GameView extends JFrame
       Random ran = new Random();
       boolean needCard = true;
       Component check = null;
+      int i = 0;
       while(needCard){
-      check = pnlComputerHand.getComponentAt(ran.nextInt(pnlComputerHand.WIDTH), ran.nextInt(pnlComputerHand.HEIGHT));
+      check = pnlComputerHand.getComponentAt(ran.nextInt(pnlComputerHand.getWidth()), ran.nextInt(pnlComputerHand.getHeight()));
       if(check instanceof CardLabel){
          needCard = false;
       }
+      i++;
       }
       return (CardLabel)check;
    }

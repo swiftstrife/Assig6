@@ -17,6 +17,7 @@ public class GameController
 {
    private GameModel model;
    private GameView view;
+   private boolean computerTurn = false;
 
    public GameController(GameModel model, GameView view)
    {
@@ -51,7 +52,7 @@ public class GameController
 
             view.refresh();
          }
-         
+
       }
 
       @Override
@@ -64,26 +65,40 @@ public class GameController
                view.addCardToPlayArea(sourceCard, destinationCard);
                view.addCardToHand(model.dealCardFromHumanHand());
                model.setTopCard(destinationCard, sourceCard);
-               //computerMove();
+               computerTurn = true;
             }
          }
          view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
          view.pack();
+         if (computerTurn == true)
+         {
+            computerMove();
+         }
       }
-      
-      public void computerMove(){
+
+      public void computerMove()
+      {
          int attempts = 0;
-         while(attempts<10){
+         while (attempts < 10)
+         {
             CardLabel test = view.getCompSource();
-            System.out.println("Result: "+test.getCard());
+            System.out.println("Result: " + test.getCard());
+            attempts++;
+            if (test != null)
+            {
+               break;
             }
          }
-      
+         if (attempts == 10)
+         {
+            model.setCantPlay(true);
+         }
+         computerTurn = false;
+      }
 
       @Override
       public void mouseClicked(MouseEvent e)
       {
-     
 
       }
 
@@ -108,7 +123,7 @@ public class GameController
       public void mouseDragged(MouseEvent e)
       {
          // TODO Auto-generated method stub
-         
+
       }
 
       @Override
@@ -119,7 +134,7 @@ public class GameController
          {
             card.flip();
          }
-         
+
       }
 
    }
