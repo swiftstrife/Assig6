@@ -10,13 +10,16 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
+import javax.security.auth.Refreshable;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class GameController
 {
    private GameModel model;
    private GameView view;
+   private boolean computerTurn = false;
 
    public GameController(GameModel model, GameView view)
    {
@@ -39,7 +42,7 @@ public class GameController
       public void mousePressed(MouseEvent e)
       {
          sourceCard = (CardLabel) e.getSource();
-         System.out.println(((CardLabel) e.getSource()).getCard().toString());
+         System.out.println("Click source: "+((CardLabel) e.getSource()).getCard().toString());
          CardLabel card = ((CardLabel) e.getSource());
          if (card.faceUp == false)
          {
@@ -51,7 +54,7 @@ public class GameController
 
             view.refresh();
          }
-         
+
       }
 
       @Override
@@ -64,27 +67,67 @@ public class GameController
                view.addCardToPlayArea(sourceCard, destinationCard);
                view.addCardToHand(model.dealCardFromHumanHand());
                model.setTopCard(destinationCard, sourceCard);
-               CardLabel bestMove[] = model.planNextMove(view.getComputerHand());
-               if(bestMove == null){
-                  model.setCompCantPlay(true);
-                  CardLabel bestMoves[] = model.planNextMove(view.getComputerHand());
-                  view.compMakeMove(bestMoves);
-                  System.out.println("Bestmove isnt null");
-               } else{
-                  view.compMakeMove(bestMove);
-               }
-              
-              
+               view.refresh();
+               computerTurn = true;
             }
          }
          view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
          view.pack();
+         if (computerTurn == true)
+         {
+            computerMove();
+         }
+      }
+
+      public void computerMove()
+      {
+         int computerAttempts =20;
+         int attempts = 0;
+         while (attempts < computerAttempts)
+         {
+            CardLabel test = view.getCompSource();
+            System.out.println("Result: " + test.getCard());
+            attempts++;
+
+            CardLabel[] playedCards = view.getDestination();
+            CardLabel destination;
+            for (int i = 0; i < playedCards.length; i++)
+            {
+               if (test != null && playedCards[i].isPlayed())
+               {
+               if (model.isComputerPlayable(test.getCard(), playedCards[i].getCard()))
+               {
+                  destination= playedCards[i];
+                  System.out.println("adding cards");
+                  view.addCardToPlayArea(test, playedCards[i]);
+                  view.addCardToComputerHand(model.dealCardFromComputerHand());
+                  System.out.println("Card being set to top cards " +test.getCard());
+                  model.setTopCard(destination, test);
+                  model.printTopCards();
+                  attempts = computerAttempts+1;
+                  computerTurn = false;
+                  break;
+               }
+               }
+            }
+            if (attempts == computerAttempts-2)
+            {
+               model.setCompCantPlay(true);
+               view.setComputerScore(model.getCompCannotPlays());
+               JOptionPane.showMessageDialog(null, "computer out of options");
+               if (model.getCompCannotPlays() > 10)
+               {
+                  view.showWinner();
+               }
+            }
+         }
+         
+         computerTurn = false;
       }
 
       @Override
       public void mouseClicked(MouseEvent e)
       {
-     
 
       }
 
@@ -109,7 +152,7 @@ public class GameController
       public void mouseDragged(MouseEvent e)
       {
          // TODO Auto-generated method stub
-         
+
       }
 
       @Override
@@ -120,7 +163,7 @@ public class GameController
          {
             card.flip();
          }
-         
+
       }
 
    }
