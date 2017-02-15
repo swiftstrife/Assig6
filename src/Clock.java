@@ -88,7 +88,7 @@ public class Clock extends JFrame
 				counter = 0;
 				timeText.setText("" + formatToTime(counter));
 			}
-			doNothing(PAUSE);
+         doNothing(PAUSE);
 		}
 
 
