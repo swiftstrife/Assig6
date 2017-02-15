@@ -25,24 +25,31 @@ public class GameView extends JFrame {
 	public JPanel pnlPlayArea = new JPanel();
 	public JPanel pnlTimer = new JPanel();
 	JLabel lblCantPlay = new JLabel("0", JLabel.CENTER);
+	JLabel compCantPlay = new JLabel("0", JLabel.CENTER);
 	JPanel playPanel = new JPanel();
 	JPanel mainPanel = new JPanel();
 	JPanel timerPanel = new JPanel();
 	JButton cantPlayButton = new JButton("Can't Play");
+	JPanel buttonPanel = new JPanel();
+	JPanel comPanel = new JPanel();
 
 	// public JLabel lblConsole;
 
 	GameView(String title, int numCardsPerHand, int numPlayers) {
 		super(title);
 		mainPanel.setLayout(new GridLayout(3, 1));
-		timerPanel.setLayout(new GridLayout(2, 1));
-		playPanel.setLayout(new GridLayout(2, 1));
-		playPanel.setBorder(BorderFactory.createTitledBorder("Reset Count"));
+		timerPanel.setLayout(new GridLayout(3, 1));
+		playPanel.setLayout(new GridLayout(3, 1));
+		playPanel.setBorder(BorderFactory.createTitledBorder("Player Resets"));
+		comPanel.setBorder(BorderFactory.createTitledBorder("Comp Resets"));
+		comPanel.add(compCantPlay);
 		playPanel.add(lblCantPlay);
-		playPanel.add(cantPlayButton);
+		buttonPanel.add(cantPlayButton);
+		playPanel.add(buttonPanel);
 		mainPanel.add(pnlComputerHand);
 		mainPanel.add(pnlPlayArea);
 		mainPanel.add(pnlHumanHand);
+		timerPanel.add(comPanel);
 		timerPanel.add(pnlTimer);
 		timerPanel.add(playPanel);
 		setSize(475, 500);
@@ -79,10 +86,7 @@ public class GameView extends JFrame {
 
 	}
 
-	public void showWinnings() {
-		// TODO Show winning stacks?
 
-	}
 
 	public void refresh() {
 		

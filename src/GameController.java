@@ -49,8 +49,7 @@ public class GameController
             view.changeCursorImage(card);
             model.setNextCard(card);
 
-            // view.showWinner();
-            view.showWinnings();
+            view.showWinner();
 
             view.refresh();
          }
@@ -71,13 +70,7 @@ public class GameController
          view.pack();
       }
 
-      /**
-       * Determines the winner of a match
-       */
-      public void determineWinner()
-      {
 
-      }
 
       @Override
       public void mouseClicked(MouseEvent e)
