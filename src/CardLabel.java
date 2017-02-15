@@ -34,6 +34,7 @@ public class CardLabel extends JLabel
          setIcon(backIcon);
          faceUp = false;
       } else
+   if(!faceUp)
       {
          setIcon(frontIcon);
          faceUp = true;
@@ -54,5 +55,19 @@ public class CardLabel extends JLabel
    public void setPlayed(boolean played)
    {
       this.played = played;
+   }
+
+   public boolean isPlayable(CardLabel destination)
+   {
+      int comp = Math.abs(GUICard.valueAsInt(this.getCard())
+         - GUICard.valueAsInt(destination.getCard()));
+      if ((comp > 1 || comp == 0))
+      {
+         return false;
+      } else
+      {
+         return true;
+
+      }
    }
 }
