@@ -90,9 +90,11 @@ public class GameController
             {
                if (model.isPlayable(test.getCard(), playedCards[i].getCard()))
                {
-                  view.addCardToPlayArea(sourceCard, destinationCard);
+                  System.out.println("adding cards");
+                  view.addCardToPlayArea(test, playedCards[i]);
                   view.addCardToComputerHand(model.dealCardFromComputerHand());
-                  model.setTopCard( sourceCard, destinationCard);
+                  System.out.println("test " +test.getCard());
+                  model.setTopCard(playedCards[i], sourceCard);
                   attempts = 11;
                   computerTurn = false;
                   break;
@@ -101,7 +103,7 @@ public class GameController
          }
          if (attempts == 10)
          {
-            model.setCantPlay(true);
+            model.setCompCantPlay(true);
             view.setComputerScore(model.getCompCannotPlays());
             if (model.getCompCannotPlays() > 10)
             {

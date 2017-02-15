@@ -185,7 +185,9 @@ public class GameView extends JFrame
             playedCardLabels[j] = sourceCard;
          }
       }
-      
+      System.out.println("removing source " + sourceCard.getCard());
+      pnlComputerHand.remove(sourceCard);
+      pnlComputerHand.repaint();
       repaint();
    }
 
