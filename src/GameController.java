@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -23,12 +25,12 @@ public class GameController
       this.view.addGameListener(new GameListener());
       this.view.addButtonListener(new ButtonListener());
       view.showPlayArea();
-      this.view.showHands(model.getHumanHand());
-      this.view.showComputerHand(model.getHumanHand());
+      this.view.showHands(model);
+      this.view.showComputerHand(model);
 
    }
 
-   class GameListener implements MouseListener
+   class GameListener implements MouseListener, MouseMotionListener
    {
       CardLabel sourceCard;
       CardLabel destinationCard;
@@ -60,6 +62,12 @@ public class GameController
             if (model.isPlayable(sourceCard.getCard(), destinationCard.getCard()))
             {
                view.addCardToPlayArea(sourceCard, destinationCard);
+               view.addCardToHand(model.dealCardFromHumanHand());
+               model.setTopCard(destinationCard, sourceCard);
+               Card bestMove = model.planNextMove(view.getComputerHand());
+               view.compMakeMove(bestMove);
+              
+              
             }
          }
          view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -69,7 +77,7 @@ public class GameController
       @Override
       public void mouseClicked(MouseEvent e)
       {
-         // TODO Auto-generated method stub
+     
 
       }
 
@@ -77,7 +85,10 @@ public class GameController
       public void mouseEntered(MouseEvent e)
       {
          destinationCard = (CardLabel) e.getComponent();
-
+         if (destinationCard.faceUp == false)
+         {
+            destinationCard.flip();
+         }
       }
 
       @Override
@@ -85,6 +96,24 @@ public class GameController
       {
          // TODO Auto-generated method stub
 
+      }
+
+      @Override
+      public void mouseDragged(MouseEvent e)
+      {
+         // TODO Auto-generated method stub
+         
+      }
+
+      @Override
+      public void mouseMoved(MouseEvent e)
+      {
+         CardLabel card = (CardLabel) e.getComponent();
+         if (card.faceUp == false)
+         {
+            card.flip();
+         }
+         
       }
 
    }

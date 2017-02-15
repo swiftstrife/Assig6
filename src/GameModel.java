@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * @author BigMac
  *
@@ -6,11 +9,14 @@ public class GameModel
 {
    static int NUM_CARDS_PER_HAND = 7;
    static int NUM_PLAYERS = 2;
-
    int numPacksPerDeck = 1;
    int numJokersPerPack = 0;
    int numUnusedCardsPerPack = 0;
    int cannotPlays = 0;
+   int compCannotPlays = 0;
+   boolean compCantPlay= true;
+   Card[] topCards = new Card[NUM_PLAYERS];
+
    boolean cantPlay = true;
    Card[] unusedCardsPerPack = null;
 
@@ -18,6 +24,9 @@ public class GameModel
 
    public GameModel()
    {
+
+      topCards[0] = new Card();
+      topCards[1] = new Card();
       if (highCardGame.deal() == false)
       {
          System.out.print("Error: Cannot deal.");
@@ -52,14 +61,53 @@ public class GameModel
 
    public Hand getHumanHand()
    {
-      
+
       return highCardGame.getHand(0);
 
    }
-   public Hand getComputerHand(){
+
+   public Hand getComputerHand()
+   {
       return highCardGame.getHand(1);
    }
 
+   public Card dealCardFromHumanHand()
+   {
+      Card nextCard = getHumanHand().playCard();
+      if (nextCard != null)
+      {
+         return nextCard;
+      } else
+      {
+         if (highCardGame.deal() != false)
+         {
+            return dealCardFromHumanHand();
+         } else
+         {
+            return null;
+         }
+
+      }
+   }
+
+   public Card dealCardFromComputerHand()
+   {
+      Card nextCard = getComputerHand().playCard();
+      if (nextCard != null)
+      {
+         return nextCard;
+      } else
+      {
+         if (highCardGame.deal() != false)
+         {
+            return dealCardFromComputerHand();
+         } else
+         {
+            return null;
+         }
+
+      }
+   }
 
    public boolean isPlayable(Card source, Card destination)
    {
@@ -87,6 +135,35 @@ public class GameModel
    {
       this.cantPlay = cantPlay;
       cannotPlays++;
+   }
+
+   public void setTopCard(CardLabel destinationCard, CardLabel sourceCard)
+   {
+      for (int i = 0; i < topCards.length; i++)
+      {
+         if (destinationCard.getCard().equals(topCards[i]))
+         {
+            topCards[i] = sourceCard.getCard();
+            break;
+         }
+      }
+      System.out.println("Top Cards " + Arrays.toString(topCards));
+   }
+
+   public Card planNextMove(ArrayList<Card> computerHand)
+   {
+      Card bestMove = null;
+      for(Card card :computerHand){
+         for (int i = 0; i < topCards.length; i++)
+         {
+            if(isPlayable(card, topCards[i])){
+               topCards[i]=card;
+               return card;
+            }
+         }
+      }
+      
+      return bestMove;
    }
 
 }
