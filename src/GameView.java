@@ -1,6 +1,7 @@
 import javax.swing.*;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 
 /**
@@ -23,20 +24,27 @@ public class GameView extends JFrame {
 	public JPanel pnlHumanHand = new JPanel();
 	public JPanel pnlPlayArea = new JPanel();
 	public JPanel pnlTimer = new JPanel();
+	JLabel lblCantPlay = new JLabel("0", JLabel.CENTER);
+	JPanel playPanel = new JPanel();
 	JPanel mainPanel = new JPanel();
 	JPanel timerPanel = new JPanel();
+	JButton cantPlayButton = new JButton("Can't Play");
 
 	// public JLabel lblConsole;
 
 	GameView(String title, int numCardsPerHand, int numPlayers) {
 		super(title);
 		mainPanel.setLayout(new GridLayout(3, 1));
-		timerPanel.setLayout(new GridLayout(1, 1));
-
+		timerPanel.setLayout(new GridLayout(2, 1));
+		playPanel.setLayout(new GridLayout(2, 1));
+		playPanel.setBorder(BorderFactory.createTitledBorder("Reset Count"));
+		playPanel.add(lblCantPlay);
+		playPanel.add(cantPlayButton);
 		mainPanel.add(pnlComputerHand);
 		mainPanel.add(pnlPlayArea);
 		mainPanel.add(pnlHumanHand);
 		timerPanel.add(pnlTimer);
+		timerPanel.add(playPanel);
 		setSize(475, 500);
 		pnlComputerHand.setBorder(BorderFactory
 				.createTitledBorder("Computer Hand"));
@@ -51,7 +59,7 @@ public class GameView extends JFrame {
 		// this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GUICard.loadCardIcons();
-
+		
 		// Add timer
 		Clock insertClock = new Clock();
 		pnlTimer.add(insertClock.timeText);
@@ -77,6 +85,7 @@ public class GameView extends JFrame {
 	}
 
 	public void refresh() {
+		
 		pack();
 	}
 
@@ -101,6 +110,7 @@ public class GameView extends JFrame {
 					.getBackCardIcon().getIconHeight());
 			humanLabels[i].setBackground(Color.white);
 			player1.add(humanLabels[i], -i);
+         ((CardLabel) humanLabels[i]).flip();
 			pnlComputerHand.add(computerLabels[i]);
 		}
 
@@ -156,6 +166,15 @@ public class GameView extends JFrame {
 				"img");
 		setCursor(c);
 
+	}
+	void setScore(int score){
+		lblCantPlay.setText(""+score);
+		refresh();
+	}
+
+	public void addButtonListener(ActionListener buttonListener) {
+		cantPlayButton.addActionListener(buttonListener);
+		
 	}
 
 }
