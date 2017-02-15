@@ -64,22 +64,21 @@ public class GameController
                view.addCardToPlayArea(sourceCard, destinationCard);
                view.addCardToHand(model.dealCardFromHumanHand());
                model.setTopCard(destinationCard, sourceCard);
-               CardLabel bestMove[] = model.planNextMove(view.getComputerHand());
-               if(bestMove == null){
-                  model.setCompCantPlay(true);
-                  CardLabel bestMoves[] = model.planNextMove(view.getComputerHand());
-                  view.compMakeMove(bestMoves);
-                  System.out.println("Bestmove isnt null");
-               } else{
-                  view.compMakeMove(bestMove);
-               }
-              
-              
+               //computerMove();
             }
          }
          view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
          view.pack();
       }
+      
+      public void computerMove(){
+         int attempts = 0;
+         while(attempts<10){
+            CardLabel test = view.getCompSource();
+            System.out.println("Result: "+test.getCard());
+            }
+         }
+      
 
       @Override
       public void mouseClicked(MouseEvent e)

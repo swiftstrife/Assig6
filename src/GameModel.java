@@ -15,7 +15,7 @@ public class GameModel
    int numUnusedCardsPerPack = 0;
    int cannotPlays = 0;
    int compCannotPlays = 0;
-   boolean compCantPlay= true;
+   boolean compCantPlay = true;
    Card[] topCards = new Card[NUM_PLAYERS];
 
    boolean cantPlay = true;
@@ -72,6 +72,10 @@ public class GameModel
       return highCardGame.getHand(1);
    }
 
+   /**
+    * deals cards from human hands
+    * @return
+    */
    public Card dealCardFromHumanHand()
    {
       Card nextCard = getHumanHand().playCard();
@@ -91,6 +95,10 @@ public class GameModel
       }
    }
 
+   /**
+    * deals card for human Hand
+    * @return
+    */
    public Card dealCardFromComputerHand()
    {
       Card nextCard = getComputerHand().playCard();
@@ -132,15 +140,23 @@ public class GameModel
       return cannotPlays;
    }
 
+   public int getCompCannotPlays()
+   {
+      return compCannotPlays;
+   }
+
    public void setCantPlay(boolean cantPlay)
    {
       this.cantPlay = cantPlay;
       cannotPlays++;
    }
+
    public void setCompCantPlay(boolean compCantPlay)
    {
       this.compCantPlay = compCantPlay;
+      compCannotPlays++;
    }
+
    public void setTopCard(CardLabel destinationCard, CardLabel sourceCard)
    {
       for (int i = 0; i < topCards.length; i++)
@@ -153,35 +169,5 @@ public class GameModel
       }
       System.out.println("Top Cards " + Arrays.toString(topCards));
    }
-
-   public CardLabel[] planNextMove(Component[] computerHand)
-   {
-    
-      Component[] cardLabels = computerHand;
-      for (Component lab : cardLabels)
-      {
-         if (lab instanceof CardLabel)
-         {
-            Card card = ((CardLabel) lab).getCard();
-            for (int i = 0; i < topCards.length; i++)
-            {
-               if(compCantPlay){
-                  Card temp = topCards[i];
-                  topCards[i]=card;
-                  setCompCantPlay(false);
-                  return new CardLabel[]{(CardLabel) lab,new CardLabel(temp)};
-               }
-               if(isPlayable(card, topCards[i])){
-                  topCards[i]=card;
-                  return new CardLabel[]{(CardLabel) lab,new CardLabel(topCards[i])};
-               }
-            }
-        
-         }
-      }
-      System.out.println("is this the prob?");
-      return null;
-   }
-      
-
+ 
 }

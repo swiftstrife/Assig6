@@ -1,12 +1,24 @@
-import javax.swing.*;
-
-import com.sun.media.jfxmedia.events.PlayerStateEvent.PlayerState;
-
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
+import java.util.Random;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  * @author BigMac
@@ -39,7 +51,6 @@ public class GameView extends JFrame
    JPanel buttonPanel = new JPanel();
    JPanel comPanel = new JPanel();
 
-   // public JLabel lblConsole;
 
    GameView(String title, int numCardsPerHand, int numPlayers)
    {
@@ -62,14 +73,12 @@ public class GameView extends JFrame
       setSize(475, 500);
       pnlComputerHand.setBorder(BorderFactory.createTitledBorder("Computer Hand"));
       pnlHumanHand.setBorder(BorderFactory.createTitledBorder("Your Hand"));
-      // pnlHumanHand.setLayout(new BorderLayout());
       pnlPlayArea.setBorder(BorderFactory.createTitledBorder("Playing Area"));
       pnlTimer.setBorder(BorderFactory.createTitledBorder("Clock"));
       pnlPlayArea.setLayout(new GridLayout(1, 2));
       pnlTimer.setLayout(new GridLayout(3, 1));
       this.add(mainPanel, BorderLayout.CENTER);
       this.add(timerPanel, BorderLayout.EAST);
-      // this.setLocationRelativeTo(null);
       this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       GUICard.loadCardIcons();
 
@@ -108,6 +117,8 @@ public class GameView extends JFrame
       for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
       {
          computerLabels[i] = new CardLabel(model.dealCardFromComputerHand());
+         ((CardLabel) computerLabels[i]).flip();
+         
          pnlComputerHand.add(computerLabels[i]);
       }
       this.pack();
@@ -121,23 +132,12 @@ public class GameView extends JFrame
     */
    public void showHands(GameModel model)
    {
-      // TODO enable multiple hands????
-      // JLayeredPane player1 = new JLayeredPane();
-
       for (int i = 0; i < NUM_CARDS_PER_HAND; i++)
       {
-         // computerLabels[i] = new JLabel(GUICard.getBackCardIcon());
          humanLabels[i] = new CardLabel(model.dealCardFromHumanHand());
          humanLabels[i].addMouseListener(this.gameListener);
-         /*
-          * humanLabels[i].setBounds(((getWidth() - i (getWidth() /
-          * NUM_CARDS_PER_HAND))), 0, GUICard .getBackCardIcon().getIconWidth(),
-          * GUICard .getBackCardIcon().getIconHeight());
-          */
          humanLabels[i].setBackground(Color.white);
-         // player1.add(humanLabels[i], -i);
          ((CardLabel) humanLabels[i]).flip();
-         // pnlComputerHand.add(computerLabels[i]);
          pnlHumanHand.add(humanLabels[i]);
       }
 
@@ -218,24 +218,22 @@ public class GameView extends JFrame
 
    }
 
-   public Component[] getComputerHand()
+   public CardLabel getCompSource()
    {
-      return pnlComputerHand.getComponents();
-
-   }
-
-   public void compMakeMove(CardLabel[] bestMove)
-   {
-      for (int j = 0; j < bestMove.length; j++)
-      {
-         if (playedCardLabels[j].getCard().equals(bestMove[1].getCard()))
-         {
-               bestMove[j].flip();
-            addCardToPlayArea(bestMove[0], playedCardLabels[j]);
-            System.out.println("runs");
-            break;
-         }
+      Random ran = new Random();
+      boolean needCard = true;
+      Component check = null;
+      while(needCard){
+      check = pnlComputerHand.getComponentAt(ran.nextInt(pnlComputerHand.WIDTH), ran.nextInt(pnlComputerHand.HEIGHT));
+      if(check instanceof CardLabel){
+         needCard = false;
       }
+      }
+      return (CardLabel)check;
    }
+
+
+
+
 
 }
