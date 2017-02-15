@@ -17,6 +17,7 @@ public class GameController
 {
    private GameModel model;
    private GameView view;
+   private boolean computerTurn = false;
 
    public GameController(GameModel model, GameView view)
    {
@@ -51,7 +52,7 @@ public class GameController
 
             view.refresh();
          }
-         
+
       }
 
       @Override
@@ -64,27 +65,57 @@ public class GameController
                view.addCardToPlayArea(sourceCard, destinationCard);
                view.addCardToHand(model.dealCardFromHumanHand());
                model.setTopCard(destinationCard, sourceCard);
-               CardLabel bestMove[] = model.planNextMove(view.getComputerHand());
-               if(bestMove == null){
-                  model.setCompCantPlay(true);
-                  CardLabel bestMoves[] = model.planNextMove(view.getComputerHand());
-                  view.compMakeMove(bestMoves);
-                  System.out.println("Bestmove isnt null");
-               } else{
-                  view.compMakeMove(bestMove);
-               }
-              
-              
+               computerTurn = true;
             }
          }
          view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
          view.pack();
+         if (computerTurn == true)
+         {
+            computerMove();
+         }
+      }
+
+      public void computerMove()
+      {
+         int attempts = 0;
+         while (attempts < 10)
+         {
+            CardLabel test = view.getCompSource();
+            System.out.println("Result: " + test.getCard());
+            attempts++;
+
+            CardLabel[] playedCards = view.getDestination();
+            for (int i = 0; i < playedCards.length; i++)
+            {
+               if (model.isPlayable(test.getCard(), playedCards[i].getCard()))
+               {
+                  System.out.println("adding cards");
+                  view.addCardToPlayArea(test, playedCards[i]);
+                  view.addCardToComputerHand(model.dealCardFromComputerHand());
+                  System.out.println("test " +test.getCard());
+                  model.setTopCard(playedCards[i], sourceCard);
+                  attempts = 11;
+                  computerTurn = false;
+                  break;
+               }
+            }
+         }
+         if (attempts == 10)
+         {
+            model.setCompCantPlay(true);
+            view.setComputerScore(model.getCompCannotPlays());
+            if (model.getCompCannotPlays() > 10)
+            {
+               view.showWinner();
+            }
+         }
+         computerTurn = false;
       }
 
       @Override
       public void mouseClicked(MouseEvent e)
       {
-     
 
       }
 
@@ -109,7 +140,7 @@ public class GameController
       public void mouseDragged(MouseEvent e)
       {
          // TODO Auto-generated method stub
-         
+
       }
 
       @Override
@@ -120,7 +151,7 @@ public class GameController
          {
             card.flip();
          }
-         
+
       }
 
    }
